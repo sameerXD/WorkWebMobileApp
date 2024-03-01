@@ -12,10 +12,7 @@ import {
   useColorScheme,
 } from 'react-native';
 
-import {
-  Colors
-} from 'react-native/Libraries/NewAppScreen';
-import RootNavigator from './src/screens/assets/RootNaivagtor';
+import RootNavigator from './src/screenNavigator/RootNaivagtor';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -23,32 +20,8 @@ type SectionProps = PropsWithChildren<{
 
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (<RootNavigator />);
+  return <RootNavigator />;
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
