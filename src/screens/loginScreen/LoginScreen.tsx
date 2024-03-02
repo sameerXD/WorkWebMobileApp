@@ -3,6 +3,7 @@ import { View, TextInput, StyleSheet, Alert, Text, Pressable, TouchableWithoutFe
 import Button from '../../Components/Button';
 import { useFocusEffect } from '@react-navigation/native';
 import { validateEmail } from '../..';
+import BackgroundImage from '../../Components/BackGroundImage';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -29,6 +30,7 @@ const LoginComponent =()=>{
  return(null) 
 }
   return (
+    <BackgroundImage>
     <View style={styles.container}>
         <View style={styles.headingBox}>
             <Text style={styles.heading}>{"Work Web"}</Text>
@@ -40,12 +42,14 @@ const LoginComponent =()=>{
         value={email}
         keyboardType="email-address"
         autoCapitalize="none"
+        placeholderTextColor="#fff" 
       />
       <TextInput
         style={styles.input}
         placeholder="Password"
         onChangeText={(val)=>setPassword(val)}
         secureTextEntry
+        placeholderTextColor="#fff" 
         value={password}
       />
       <TouchableWithoutFeedback style={styles.hightlightTextBox} onPressIn={()=>{console.log("*)*()*)*)*)*)(")}}>
@@ -53,6 +57,7 @@ const LoginComponent =()=>{
       </TouchableWithoutFeedback>
         <Button title={'Submit'} handleSubmit={handleLogin}/>
     </View>
+    </BackgroundImage>
   );
 };
 
@@ -71,10 +76,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
+    placeholderTextColor:'#fff',
+    color:'#fff'
   },
   heading: {
     fontSize:38,
-    color:'#000'
+    color:'#fff'
   },
   headingBox: {
     marginBottom:'10%'
