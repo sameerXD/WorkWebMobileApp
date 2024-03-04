@@ -4,11 +4,11 @@ import BackgroundImage from '../../Components/BackGroundImage';
 import { LoginForm } from '../../Components/LoginForm';
 import { SignUpForm } from '../../Components/SignUpForm';
 import { ForgetPasswordForm } from '../../Components/ForgotPasswordForm';
-
+import Config from "react-native-config";
 const LoginScreen = ({ navigation }) => {
   const [activeForm, setActiveForm] = useState('login')
   const [forgetPasswordActive, setForgetPasswordActive] = useState(false)
-
+  console.log("Config_______", Config.API_KEY)
   return (
     <BackgroundImage>
       <View style={styles.container}>
