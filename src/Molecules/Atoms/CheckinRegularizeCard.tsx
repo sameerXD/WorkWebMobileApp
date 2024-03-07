@@ -1,16 +1,25 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import Button from '../../Components/Button'
-export const CheckinRegularizeCard =()=>{
+interface CheckinRegularizeCardProps {
+    buttonTitle: string,
+    dateTitle:string,
+    texts:[string, string],
+    titleColor?: string
+}
+export const CheckinRegularizeCard =({buttonTitle,dateTitle, texts, titleColor}:CheckinRegularizeCardProps)=>{
     return(
            <View style={styles.cardBox}>
                 <View style={styles.timeTextBox}>
-                    <Text style={styles.cardTitle}>{"Date: 4 March 2024"}</Text>
-                    <Text style={styles.cardTextNormal}>{'Monday/ General'}</Text>
-                    <Text style={styles.cardTextNormal}>{'Working Hours - 05:30'}</Text>
+                    <Text style={[styles.cardTitle, {color:titleColor ? titleColor : '#000', fontWeight: titleColor ? '500': '600'}]}>{dateTitle}</Text>
+                    {texts?.map(item=>{
+                        return(
+                            <Text style={styles.cardTextNormal}>{item}</Text>
+                        )
+                    })}
                 </View>
                 <View style={styles.buttonBox}>
-                    <Button size={'sm'} ghost={true} title={'Check In'} handleSubmit={()=>{console.log("Checked In Pressed")}}/>
+                    <Button size={'sm'} ghost={true} title={buttonTitle} handleSubmit={()=>{console.log("Checked In Pressed")}}/>
                 </View>
            </View> 
           )}
@@ -30,9 +39,7 @@ const styles = StyleSheet.create({
     },
     cardTitle:{
         fontSize:15,
-        fontWeight:'600',
-        marginBottom:'3%',
-        color:'#000'
+        marginBottom:'3%'
     },
     cardTextNormal:{
         color:'#000'
