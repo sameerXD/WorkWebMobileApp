@@ -47,7 +47,7 @@ export const ForgetPasswordForm = ({ handleGoback }: ForgorPasswordFormProps) =>
                 autoCapitalize="none"
                 placeholderTextColor="#fff"
             />
-            <Button title={'Request'} handleSubmit={handleForgetPasswordPressed} />
+            <Button title={'Request'} size={'l'} handleSubmit={handleForgetPasswordPressed} />
         </>
     )
 }

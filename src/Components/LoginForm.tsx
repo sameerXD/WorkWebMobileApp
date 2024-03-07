@@ -52,7 +52,7 @@ export const LoginForm = ({ handleForgetPassword, handlleSingupPressed }: LoginF
             <TouchableWithoutFeedback style={styles.hightlightTextBox} onPress={handleForgetPassword}>
                 <Text style={styles.hightlightText}>{"Forget Password?"}</Text>
             </TouchableWithoutFeedback>
-            <Button title={'Submit'} handleSubmit={handleLogin} />
+            <Button title={'Submit'} size='l' handleSubmit={handleLogin} />
             <View style={{ flexDirection: 'row', marginTop: '2%' }}>
                 <Text style={{ color: '#fff', fontWeight: '600' }}>
                     {`Don't have an account ? `}

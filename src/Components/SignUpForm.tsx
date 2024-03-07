@@ -66,7 +66,7 @@ export const SignUpForm = ({ handlleLoginPressed }: SignupFormProps) => {
                 placeholderTextColor="#fff"
                 value={address}
             />
-            <Button color={'#FFC727'} title={'Get Started'} handleSubmit={HandleSignUp} />
+            <Button size='l' color={'#FFC727'} title={'Get Started'} handleSubmit={HandleSignUp} />
             <View style={{ flexDirection: 'row', marginTop: '2%' }}>
                 <Text style={{ color: '#fff', fontWeight: '600' }}>
                     {`Already have an account ? `}
