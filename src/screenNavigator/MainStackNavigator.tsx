@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../screens/HomeScreen/HomeScreen';
+import { WorkspaceScreen } from '../screens/WorkSpaceScreen/WorkSpaceScreen';
 const MainStackNavigator = () => {
     const Stack = createNativeStackNavigator();
     return (
@@ -10,6 +11,7 @@ const MainStackNavigator = () => {
                     gestureEnabled: true,
                 })}>
                 <Stack.Screen name="HomeScreen" component={HomeScreen} />
+                <Stack.Screen name="WorkspaceScreen" component={WorkspaceScreen} />
             </Stack.Navigator>
     )
 

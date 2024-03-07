@@ -1,58 +1,29 @@
 import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, Alert, Text, Pressable, TouchableWithoutFeedback } from 'react-native';
-import Button from '../../Components/Button';
-import { useFocusEffect } from '@react-navigation/native';
-import { validateEmail } from '../..';
-
+import { View, StyleSheet, Text } from 'react-native';
+import BackgroundImage from '../../Components/BackGroundImage';
+import { LoginForm } from '../../Components/LoginForm';
+import { SignUpForm } from '../../Components/SignUpForm';
+import { ForgetPasswordForm } from '../../Components/ForgotPasswordForm';
+import Config from "react-native-config";
 const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  useFocusEffect( 
-    React.useCallback(() => {
-    setEmail('');
-    setPassword('');
-  }, []));
-  const handleLogin = () => {
-    if (!email.trim() || !password.trim()) {
-      Alert.alert('Error', 'Please enter both email and password');
-      return;
-    }
-
-    if (validateEmail(email) && password.length > 8 && password.length < 14) {
-      navigation.navigate('HomeScreen')
-    } else {
-      Alert.alert('Error', 'Invalid email or password');
-    }
-  };
-const LoginComponent =()=>{
- return(null) 
-}
+  const [activeForm, setActiveForm] = useState('login')
+  const [forgetPasswordActive, setForgetPasswordActive] = useState(false)
+  console.log("Config_______", Config.API_KEY)
   return (
-    <View style={styles.container}>
+    <BackgroundImage>
+      <View style={styles.container}>
         <View style={styles.headingBox}>
-            <Text style={styles.heading}>{"Work Web"}</Text>
+          <Text style={styles.heading}>{"Work Web"}</Text>
         </View>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        onChangeText={(val)=>setEmail(val)}
-        value={email}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        onChangeText={(val)=>setPassword(val)}
-        secureTextEntry
-        value={password}
-      />
-      <TouchableWithoutFeedback style={styles.hightlightTextBox} onPressIn={()=>{console.log("*)*()*)*)*)*)(")}}>
-      <Text style={styles.hightlightText}>{"Forget Password?"}</Text>
-      </TouchableWithoutFeedback>
-        <Button title={'Submit'} handleSubmit={handleLogin}/>
-    </View>
+        {forgetPasswordActive ? <ForgetPasswordForm handleGoback={() => setForgetPasswordActive(false)} /> :
+          (
+            <>
+              {activeForm == 'login' && <LoginForm handleForgetPassword={() => setForgetPasswordActive(true)} handlleSingupPressed={() => { setActiveForm('signUp') }} />}
+              {activeForm == 'signUp' && <SignUpForm handlleLoginPressed={() => { setActiveForm('login') }} />}
+            </>
+          )}
+      </View>
+    </BackgroundImage>
   );
 };
 
@@ -71,21 +42,22 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
+    color: '#fff'
   },
   heading: {
-    fontSize:38,
-    color:'#000'
+    fontSize: 38,
+    color: '#fff'
   },
   headingBox: {
-    marginBottom:'10%'
+    marginBottom: '2%'
   },
-  hightlightText:{
-    color:'red',
-    alignSelf:'flex-start',
-    marginBottom:'2%'
+  hightlightText: {
+    color: 'red',
+    alignSelf: 'flex-start',
+    marginBottom: '2%'
   },
-  hightlightTextBox:{
-    alignSelf:'flex-start',
+  hightlightTextBox: {
+    alignSelf: 'flex-start',
   }
 });
 
