@@ -13,7 +13,6 @@ interface LoginFormProps {
 export const LoginForm = ({ handleForgetPassword, handlleSingupPressed }: LoginFormProps) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const navigation = useNavigation();
     const isLoggedIn = useSelector(state => state.user.isLoggedIn);
     const dispatch = useDispatch();
     useFocusEffect(
