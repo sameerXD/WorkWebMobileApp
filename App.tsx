@@ -6,22 +6,19 @@
  */
 
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  StyleSheet,
-  useColorScheme,
-} from 'react-native';
 
 import RootNavigator from './src/screenNavigator/RootNaivagtor';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+import { Provider } from 'react-redux'
+import store from './src/redux/store';
 
 
 function App(): React.JSX.Element {
 
-  return <RootNavigator />;
+  return (
+    <Provider store={store}>
+      <RootNavigator />
+    </Provider>
+  );
 }
 
 export default App;

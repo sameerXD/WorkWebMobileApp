@@ -4,6 +4,7 @@ import { Text, TextInput, TouchableWithoutFeedback, StyleSheet, Alert, View } fr
 import { validateEmail } from '..';
 import Button from './Button';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
 
 interface LoginFormProps {
     handleForgetPassword: () => void;
@@ -13,6 +14,8 @@ export const LoginForm = ({ handleForgetPassword, handlleSingupPressed }: LoginF
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigation = useNavigation();
+    const isLoggedIn = useSelector(state => state.user.isLoggedIn);
+    const dispatch = useDispatch();
     useFocusEffect(
         React.useCallback(() => {
             setEmail('');
@@ -25,10 +28,13 @@ export const LoginForm = ({ handleForgetPassword, handlleSingupPressed }: LoginF
         }
 
         if (validateEmail(email) && password.length > 8 && password.length < 14) {
-            navigation.navigate('HomeScreen')
+            updateUser();
         } else {
             Alert.alert('Error', 'Invalid email or password');
         }
+    };
+    const updateUser = () => {
+      dispatch({ type: 'USER_LOGGEDIN', payload: { isLoggedIn: !isLoggedIn} });
     };
     return (
         <>

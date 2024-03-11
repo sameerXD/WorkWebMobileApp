@@ -6,6 +6,7 @@ import Home from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/Fontisto';
 import OfficeIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DocumetIcon from 'react-native-vector-icons/AntDesign';
+import { LogOutScreen } from '../screens/LogOutScreen/LogOutScreen';
 const Tab = createBottomTabNavigator();
 
 export const BottomTabs=()=> {
@@ -19,7 +20,7 @@ export const BottomTabs=()=> {
       <Tab.Screen options={{tabBarIcon:()=><OfficeIcon size={30} name='office-building-marker'/>, tabBarStyle:{backgroundColor:'yellow'}}} name="Attendance" component={HomeScreen} />
       <Tab.Screen options={{tabBarIcon:()=><DocumetIcon size={30} name='copy1'/>}} name="Documents" component={HomeScreen} />
       <Tab.Screen options={{tabBarIcon:()=><Icon size={30} name='holiday-village'/>}} name="Leaves" component={HomeScreen} />
-      <Tab.Screen options={{tabBarIcon:()=><Home size={30} name='user'/>}} name="Profile" component={HomeScreen} />
+      <Tab.Screen options={{tabBarIcon:()=><Home size={30} name='user'/>}} name="Profile" component={LogOutScreen} />
     </Tab.Navigator>
   );
 }

@@ -8,12 +8,11 @@ import Config from "react-native-config";
 const LoginScreen = ({ navigation }) => {
   const [activeForm, setActiveForm] = useState('login')
   const [forgetPasswordActive, setForgetPasswordActive] = useState(false)
-  console.log("Config_______", Config.API_KEY)
   return (
     <BackgroundImage>
       <View style={styles.container}>
         <View style={styles.headingBox}>
-          <Text style={styles.heading}>{"Work Web"}</Text>
+          <Text style={styles.heading}>{`Work Web`}</Text>
         </View>
         {forgetPasswordActive ? <ForgetPasswordForm handleGoback={() => setForgetPasswordActive(false)} /> :
           (
