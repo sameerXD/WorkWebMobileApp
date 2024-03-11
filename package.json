@@ -8,10 +8,9 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "build:android": "react-native build-android --mode=release",
-    "android:testing-release": "cross-env ENVFILE=.env react-native run-android --mode=release ",
+    "build:android:testing": "cd android && gradlew.bat assembleRelease",
+    "build:android:live": "copy .env.live .env && cd android && gradlew.bat assembleReleas",
     "android:testing": "cross-env ENVFILE=.env react-native run-android --mode=debug ",
-    "android:live-release": "cross-env ENVFILE=.env.live react-native run-android --mode=release",
     "android:live": "cross-env ENVFILE=.env.live react-native run-android --mode=debug"
   },
   "dependencies": {
