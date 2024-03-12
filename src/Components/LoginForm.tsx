@@ -3,8 +3,9 @@ import React, { useState } from 'react'
 import { Text, TextInput, TouchableWithoutFeedback, StyleSheet, Alert, View } from 'react-native'
 import { validateEmail } from '..';
 import Button from './Button';
-import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
+import { getUserLoggedIn } from '../redux/actions/getUserData';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface LoginFormProps {
     handleForgetPassword: () => void;
@@ -13,6 +14,7 @@ interface LoginFormProps {
 export const LoginForm = ({ handleForgetPassword, handlleSingupPressed }: LoginFormProps) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [jwtToken, setJwtToken] = useState('');
     const isLoggedIn = useSelector(state => state.user.isLoggedIn);
     const dispatch = useDispatch();
     useFocusEffect(
@@ -20,20 +22,42 @@ export const LoginForm = ({ handleForgetPassword, handlleSingupPressed }: LoginF
             setEmail('');
             setPassword('');
         }, []));
-    const handleLogin = () => {
+    const handleLogin =async () => {
         if (!email.trim() || !password.trim()) {
             Alert.alert('Error', 'Please enter both email and password');
             return;
         }
 
-        if (validateEmail(email) && password.length > 8 && password.length < 14) {
-            updateUser();
+        if (validateEmail(email) && password.length > 2 && password.length < 14) {
+            const result = await getUserLoggedIn({email:email, password:password})
+            .then( data=>{
+                if(data?.data){
+                        try {
+                         AsyncStorage.setItem(
+                            'token',
+                            data?.data?.token,
+                            );
+                        } catch(error){
+                            Alert.alert("Errors",error);
+                        }
+                        updateUser();
+                        {data?.data?.token && setJwtToken(data?.data?.token)}
+                    }
+                    if(data?.errors){
+                        Alert.alert("Errors",data?.errors[0]?.message);
+                    }
+                }
+            ).catch( error=>{
+                    Alert.alert('Errors',error);
+                })
         } else {
             Alert.alert('Error', 'Invalid email or password');
         }
     };
-    const updateUser = () => {
-      dispatch({ type: 'USER_LOGGEDIN', payload: { isLoggedIn: !isLoggedIn} });
+    const updateUser =async () => {
+      if(jwtToken) {
+         dispatch({ type: 'USER_LOGGEDIN', payload: { isLoggedIn: !isLoggedIn} });
+      }
     };
     return (
         <>
