@@ -8,7 +8,6 @@ export const Header = () => {
     return (
         <View style={{ width: '100%', height: '9%', backgroundColor:'#F6F4F9', flexDirection:'row', alignItems:'center', paddingHorizontal:'2%', justifyContent:'space-between'}}>
             <WorkWebLogo onPress={()=>{navigation.goBack()
-        console.log("Naviation PRessed")
         }}/>
             <Icon
                 name='notifications'
