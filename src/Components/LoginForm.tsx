@@ -4,7 +4,7 @@ import { Text, TextInput, TouchableWithoutFeedback, StyleSheet, Alert, View } fr
 import { validateEmail } from '..';
 import Button from './Button';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserLoggedIn } from '../redux/actions/getUserData';
+import { getUserData, getUserLoggedIn } from '../redux/actions/getUserData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface LoginFormProps {
@@ -56,7 +56,8 @@ export const LoginForm = ({ handleForgetPassword, handlleSingupPressed }: LoginF
     };
     const updateUser =async () => {
       if(jwtToken) {
-         dispatch({ type: 'USER_LOGGEDIN', payload: { isLoggedIn: !isLoggedIn} });
+         getUserData();
+         dispatch({ type: 'USER_LOGGEDIN', payload: { isLoggedIn: true} });
       }
     };
     return (
