@@ -1,15 +1,17 @@
 import React from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import { ScreenHeight, ScreenWidth } from '../assets/constants'
+import { useSelector } from 'react-redux';
 export const ProfileCard =()=>{
+    const userData = useSelector(state => state.user.userData);
     return(
         <View style={styles.profileCard}>
           <View style={styles.imageBox}>
-            <Image  source={{uri: 'https://reactnative.dev/img/tiny_logo.png'}} style={styles.image}/>
+            <Image  source={{uri: userData?.trackerId?.personalDetails?.I?.profilePicture}} style={styles.image}/>
           </View>  
           <View style={styles.textBox}>
-            <Text style={styles.nameText}>{'Ananya Joshi'}</Text>
-            <Text style={styles.userInfoText}>{'UI/UX Designer'}</Text>
+            <Text style={styles.nameText}>{userData?.trackerId?.personalDetails?.I?.name}</Text>
+            <Text style={styles.userInfoText}>{userData?.designation}</Text>
           </View>
         </View>
     )

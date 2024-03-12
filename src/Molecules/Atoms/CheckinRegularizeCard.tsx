@@ -5,9 +5,10 @@ interface CheckinRegularizeCardProps {
     buttonTitle: string,
     dateTitle:string,
     texts:[string, string],
-    titleColor?: string
+    titleColor?: string,
+    handleCheckIn: ()=> void
 }
-export const CheckinRegularizeCard =({buttonTitle,dateTitle, texts, titleColor}:CheckinRegularizeCardProps)=>{
+export const CheckinRegularizeCard =({buttonTitle,dateTitle, texts, titleColor, handleCheckIn}:CheckinRegularizeCardProps)=>{
     return(
            <View style={styles.cardBox}>
                 <View style={styles.timeTextBox}>
@@ -19,7 +20,7 @@ export const CheckinRegularizeCard =({buttonTitle,dateTitle, texts, titleColor}:
                     })}
                 </View>
                 <View style={styles.buttonBox}>
-                    <Button size={'sm'} ghost={true} title={buttonTitle} handleSubmit={()=>{console.log("Checked In Pressed")}}/>
+                    <Button size={'sm'} ghost={true} title={buttonTitle} handleSubmit={handleCheckIn}/>
                 </View>
            </View> 
           )}
