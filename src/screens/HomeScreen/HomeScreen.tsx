@@ -1,9 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Alert, ScrollView, View } from 'react-native';
 import { Header } from '../../Components/Header';
 import { serviceList } from './HomeScreenConstants';
 import { ServiceCard } from '../../Components/ServiceCard';
+import { useDispatch } from 'react-redux';
+import { getUserData } from '../../redux/actions/getUserData';
 function HomeScreen({navigation}) {
+    const dispatch = useDispatch();
+    useEffect(()=>{
+     getUserData().then(data=>{
+          dispatch({ type: 'USER_DATA', payload: { userData: data} });    
+      }).catch(error=>{
+          console.log("Value for error____",error);   
+      })
+    },[])
     const goBack=()=>{navigation.goBack()}
     const handleCalledService =(name)=>{
 
