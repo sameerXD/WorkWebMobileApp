@@ -1,14 +1,14 @@
 const initialState = {
-  counter: 0,
+  userData: {},
   isLoggedIn: false
 };
 
 const userReducer = (state = initialState, action) => {
   switch(action.type) {
-    case 'UPDATE_COUNTER':
+    case 'USER_DATA':
       return {
         ...state,
-        counter: action.payload.counter,
+        userData: action.payload.userData,
       };
     case 'USER_LOGGEDIN':
       return {
