@@ -28,7 +28,7 @@ export const LoginForm = ({ handleForgetPassword, handlleSingupPressed }: LoginF
             return;
         }
 
-        if (validateEmail(email) && password.length > 2 && password.length < 14) {
+        if (validateEmail(email) && password.length > 2 && password.length < 25) {
             const result = await getUserLoggedIn({email:email, password:password})
             .then( data=>{
                 if(data?.data){
