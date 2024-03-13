@@ -9,7 +9,10 @@ import { useSelector } from 'react-redux';
 import { useState } from 'react';
 export const WorkspaceScreen = () => {
   const userData = useSelector(state => state.user.userData);
-  const [isUserCheckedIn, setUserCheckedIn] = useState(false);
+  const [isUserCheckedIn, setUserCheckedIn] = useState(userData?.signIn?.online);
+  const handleCheckIn = ()=>{
+    setUserCheckedIn(!isUserCheckedIn)
+  }
     return (
         <View style={{ flex: 1, backgroundColor:'#fff'}}>
             <Header />
@@ -17,7 +20,7 @@ export const WorkspaceScreen = () => {
             <View style={{ flex: 1, paddingHorizontal: '3%', paddingBottom:'12%' }}>
                 <ProfileCard />
                 <Text style={styles.cardHeading}>{'Check In'}</Text>
-                <CheckinRegularizeCard handleCheckIn={()=>{setUserCheckedIn(!isUserCheckedIn)}} buttonTitle={isUserCheckedIn ? 'Check Out':'Check In'} texts={[`${new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(new Date())}/ General`, `Working Hours - ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`]} dateTitle={`Date: ${new Date().getDate()} ${new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date())} ${new Date().getFullYear()}`} />
+                <CheckinRegularizeCard handleCheckIn={handleCheckIn} buttonTitle={isUserCheckedIn ? 'Check Out':'Check In'} texts={[`${new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(new Date())}/ General`, `Working Hours - ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`]} dateTitle={`Date: ${new Date().getDate()} ${new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date())} ${new Date().getFullYear()}`} />
                 <Text style={styles.cardHeading}>{'Attendance'}</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: '16%' }}>
                     <AttendaceStatusBar title='Today' checkinTime='05:00' checkoutTime='05:00' />
