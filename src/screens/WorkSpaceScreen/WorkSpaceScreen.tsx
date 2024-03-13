@@ -1,17 +1,27 @@
 import * as React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Header } from '../../Components/Header';
 import { ProfileCard } from '../../Components/ProfileCard';
 import { CheckinRegularizeCard } from '../../Molecules/Atoms/CheckinRegularizeCard';
 import { AttendaceStatusBar } from '../../Components/AttendanceStatusBar';
 import { CardBox } from '../../Components/CardBox';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
+import { swipeUserAttendance } from '../../redux/actions/userAttendance';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 export const WorkspaceScreen = () => {
   const userData = useSelector(state => state.user.userData);
+  const dispatch = useDispatch();
   const [isUserCheckedIn, setUserCheckedIn] = useState(userData?.signIn?.online);
-  const handleCheckIn = ()=>{
-    setUserCheckedIn(!isUserCheckedIn)
+  const handleCheckIn =async()=>{
+    await AsyncStorage.getItem('token').then(async data=>{
+    await swipeUserAttendance(data).then(response=>{
+      dispatch({ type: 'USER_DATA', payload: { userData: response} });    
+        setUserCheckedIn(!isUserCheckedIn);
+      }).catch(error=>{
+        Alert.alert('Error',error)
+      });
+  })
   }
     return (
         <View style={{ flex: 1, backgroundColor:'#fff'}}>
