@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Alert, ScrollView, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 import { Header } from '../../Components/Header';
 import { serviceList } from './HomeScreenConstants';
 import { ServiceCard } from '../../Components/ServiceCard';
@@ -28,15 +28,33 @@ function HomeScreen({navigation}) {
     return ( 
         <>
             <Header />
-            <View style={{flex:1, backgroundColor:'#fff'}}>
+            <View style={styles.container}>
             <ScrollView>
-            <View style={{height:'100%', width:'100%',flexDirection: 'row',flexWrap: 'wrap', justifyContent:'center', marginTop:'3%'}}>
-                {serviceList.map((item, index)=><ServiceCard name={item.name} icon={item.icon} key={index} handleServicePressed={()=>{handleCalledService(item.name)}}/>)}
+            <View style={styles.cardContainer}>
+                {serviceList.map((item, index)=><View key={item.name} style={styles.card}><ServiceCard name={item.name} icon={item.icon} key={index} handleServicePressed={()=>{handleCalledService(item.name)}}/></View>)}
                 </View>
             </ScrollView>
             </View>
         </>
      );
 }
+
+const styles = StyleSheet.create({
+    card:{justifyContent:'center', 
+    alignItems:'center',
+    alignSelf:'center', 
+    marginVertical:'0.5%'
+    },
+    cardContainer:{height:'100%', 
+    width:'100%',
+    flexDirection: 'row',
+    flexWrap: 'wrap', 
+    justifyContent:'center', 
+    marginTop:'3%'
+    },
+    container:{flex:1, 
+        backgroundColor:'#fff'
+    }
+})
 
 export default HomeScreen;
