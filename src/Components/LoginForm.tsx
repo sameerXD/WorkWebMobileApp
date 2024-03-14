@@ -6,6 +6,7 @@ import Button from './Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserData, getUserLoggedIn } from '../redux/actions/getUserData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ViewIcon  from 'react-native-vector-icons/Feather'
 
 interface LoginFormProps {
     handleForgetPassword: () => void;
@@ -15,6 +16,7 @@ export const LoginForm = ({ handleForgetPassword, handlleSingupPressed }: LoginF
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [jwtToken, setJwtToken] = useState('');
+    const [hidePassword, setHidePassword] = useState(true)
     const isLoggedIn = useSelector(state => state.user.isLoggedIn);
     const dispatch = useDispatch();
     useFocusEffect(
@@ -71,14 +73,17 @@ export const LoginForm = ({ handleForgetPassword, handlleSingupPressed }: LoginF
                 autoCapitalize="none"
                 placeholderTextColor="#fff"
             />
+            <View  style={styles.passwordBox}>
             <TextInput
-                style={styles.input}
+                style={styles.passwordInput}
                 placeholder="Password"
                 onChangeText={(val) => setPassword(val)}
-                secureTextEntry
+                secureTextEntry={hidePassword}
                 placeholderTextColor="#fff"
                 value={password}
             />
+            <ViewIcon name='eye' color={'#fff'} size={25} onPress={()=>setHidePassword(!hidePassword)}/>
+            </View>
             <TouchableWithoutFeedback style={styles.hightlightTextBox} onPress={handleForgetPassword}>
                 <Text style={styles.hightlightText}>{"Forget Password?"}</Text>
             </TouchableWithoutFeedback>
@@ -111,5 +116,21 @@ const styles = StyleSheet.create({
     },
     hightlightTextBox: {
         alignSelf: 'flex-start',
+    },
+    passwordInput:{
+        width: '90%',
+        color: '#fff',
+    },
+    passwordBox:{
+        width: '100%',
+        height: 40,
+        marginVertical: 10,
+        paddingHorizontal: 10,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+        flexDirection:'row',
+        justifyContent:'space-between',
+        alignItems:'center'
     }
 });
