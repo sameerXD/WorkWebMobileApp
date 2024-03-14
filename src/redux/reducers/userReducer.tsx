@@ -1,6 +1,7 @@
 const initialState = {
   userData: {},
-  isLoggedIn: false
+  isLogined: false,
+  isLoading: false
 };
 
 const userReducer = (state = initialState, action) => {
@@ -10,11 +11,16 @@ const userReducer = (state = initialState, action) => {
         ...state,
         userData: action.payload.userData,
       };
-    case 'USER_LOGGEDIN':
+    case 'USER_LOGINED':
       return {
         ...state,
-        isLoggedIn: action.payload.isLoggedIn
-      }
+        isLogined: action.payload.isLogined
+      };
+      case 'USER_LOGINED_LOADING':
+        return {
+          ...state,
+          isLoading: action.payload.isLoading
+        }
     default:
       return state;
   }

@@ -15,52 +15,80 @@ interface LoginFormProps {
 export const LoginForm = ({ handleForgetPassword, handlleSingupPressed }: LoginFormProps) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [jwtToken, setJwtToken] = useState('');
     const [hidePassword, setHidePassword] = useState(true)
-    const isLoggedIn = useSelector(state => state.user.isLoggedIn);
+    const isLoading = useSelector(state => state.user.isLoading);
     const dispatch = useDispatch();
     useFocusEffect(
         React.useCallback(() => {
             setEmail('');
             setPassword('');
         }, []));
-    const handleLogin =async () => {
+
+    const handleLogin = async () => {
+        dispatch({ type: 'USER_LOGINED_LOADING', payload: { isLoading: true } })
         if (!email.trim() || !password.trim()) {
-            Alert.alert('Error', 'Please enter both email and password');
+            Alert.alert('Error', 'Please enter both email and password', [
+                {
+                    text: 'ok',
+                    onPress: () => dispatch({ type: 'USER_LOGINED_LOADING', payload: { isLoading: false } })
+                }
+            ]);
             return;
         }
 
         if (validateEmail(email) && password.length > 2 && password.length < 25) {
-            const result = await getUserLoggedIn({email:email, password:password})
-            .then( data=>{
-                if(data?.data){
+            const result = await getUserLoggedIn({ email: email, password: password })
+                .then(async data => {
+                    if (data?.data) {
                         try {
-                         AsyncStorage.setItem(
-                            'token',
-                            data?.data?.token,
+                            AsyncStorage.setItem(
+                                'token',
+                                data?.data?.token,
                             );
-                        } catch(error){
-                            Alert.alert("Errors",error);
+                        } catch (error) {
+                            Alert.alert("Errors", error, [
+                                {
+                                    text: 'ok',
+                                    onPress: () => dispatch({ type: 'USER_LOGINED_LOADING', payload: { isLoading: false } })
+                                }
+                            ]);
                         }
-                        updateUser();
-                        {data?.data?.token && setJwtToken(data?.data?.token)}
+                        await AsyncStorage.getItem('token').then(data=>{
+                            updateUser(data);
+                        })
                     }
-                    if(data?.errors){
-                        Alert.alert("Errors",data?.errors[0]?.message);
+                    if (data?.errors) {
+                        Alert.alert("Errors", data?.errors[0]?.message, [
+                            {
+                                text: 'ok',
+                                onPress: () => dispatch({ type: 'USER_LOGINED_LOADING', payload: { isLoading: false } })
+                            }
+                        ]);
                     }
                 }
-            ).catch( error=>{
-                    Alert.alert('Errors',error);
+                ).catch(error => {
+                    Alert.alert('Errors', error, [
+                        {
+                            text: 'ok',
+                            onPress: () => dispatch({ type: 'USER_LOGINED_LOADING', payload: { isLoading: false } })
+                        }
+                    ]);
                 })
         } else {
-            Alert.alert('Error', 'Invalid email or password');
+            Alert.alert('Error', 'Invalid email or password', [
+                {
+                    text: 'ok',
+                    onPress: () => dispatch({ type: 'USER_LOGINED_LOADING', payload: { isLoading: false } })
+                }
+            ]);
         }
     };
-    const updateUser =async () => {
-      if(jwtToken) {
-         getUserData();
-         dispatch({ type: 'USER_LOGGEDIN', payload: { isLoggedIn: true} });
-      }
+    const updateUser = async (jwtToken:string) => {
+        if (jwtToken) {
+           await getUserData();
+            dispatch({ type: 'USER_LOGINED_LOADING', payload: { isLoading: false } })
+            dispatch({ type: 'USER_LOGINED', payload: { isLogined: true } });
+        }
     };
     return (
         <>
@@ -73,21 +101,21 @@ export const LoginForm = ({ handleForgetPassword, handlleSingupPressed }: LoginF
                 autoCapitalize="none"
                 placeholderTextColor="#fff"
             />
-            <View  style={styles.passwordBox}>
-            <TextInput
-                style={styles.passwordInput}
-                placeholder="Password"
-                onChangeText={(val) => setPassword(val)}
-                secureTextEntry={hidePassword}
-                placeholderTextColor="#fff"
-                value={password}
-            />
-            <ViewIcon name='eye' color={'#fff'} size={25} onPress={()=>setHidePassword(!hidePassword)}/>
+            <View style={styles.passwordBox}>
+                <TextInput
+                    style={styles.passwordInput}
+                    placeholder="Password"
+                    onChangeText={(val) => setPassword(val)}
+                    secureTextEntry={hidePassword}
+                    placeholderTextColor="#fff"
+                    value={password}
+                />
+                <ViewIcon name='eye' color={'#fff'} size={25} onPress={() => setHidePassword(!hidePassword)} />
             </View>
             <TouchableWithoutFeedback style={styles.hightlightTextBox} onPress={handleForgetPassword}>
                 <Text style={styles.hightlightText}>{"Forget Password?"}</Text>
             </TouchableWithoutFeedback>
-            <Button title={'Submit'} size='l' handleSubmit={handleLogin} />
+            <Button title={'Submit'} isLoading={isLoading} size='l' handleSubmit={handleLogin} />
             <View style={{ flexDirection: 'row', marginTop: '2%' }}>
                 <Text style={{ color: '#fff', fontWeight: '600' }}>
                     {`Don't have an account ? `}
@@ -117,11 +145,11 @@ const styles = StyleSheet.create({
     hightlightTextBox: {
         alignSelf: 'flex-start',
     },
-    passwordInput:{
+    passwordInput: {
         width: '90%',
         color: '#fff',
     },
-    passwordBox:{
+    passwordBox: {
         width: '100%',
         height: 40,
         marginVertical: 10,
@@ -129,8 +157,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#ccc',
         borderRadius: 5,
-        flexDirection:'row',
-        justifyContent:'space-between',
-        alignItems:'center'
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
     }
 });

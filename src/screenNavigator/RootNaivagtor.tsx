@@ -22,7 +22,7 @@ const RootNavigator = () => {
         })
     },[])
     const Stack = createNativeStackNavigator();
-    const isLoggedin = useSelector(state=>state.user.isLoggedIn)
+    const isLogined = useSelector(state=>state.user.isLogined)
     return (
         <NavigationContainer>
             {isLoading ? <View style={{ flex:1, justifyContent:'center', alignItems:'center'}}>
@@ -36,7 +36,7 @@ const RootNavigator = () => {
                 headerShown: false,
                 gestureEnabled: true,
             })}>
-                <Stack.Screen name="root" component={isLoggedin ? MainStackNavigator :LoginStackNavigator} />
+                <Stack.Screen name="root" component={isLogined ? MainStackNavigator :LoginStackNavigator} />
             </Stack.Navigator>}
         </NavigationContainer>
     )
