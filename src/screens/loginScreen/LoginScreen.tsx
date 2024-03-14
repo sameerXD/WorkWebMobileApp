@@ -8,6 +8,7 @@ import Config from "react-native-config";
 const LoginScreen = ({ navigation }) => {
   const [activeForm, setActiveForm] = useState('login')
   const [forgetPasswordActive, setForgetPasswordActive] = useState(false)
+  console.log("Confi.BASE_URL_______*********",Config.BASE_URL);
   return (
     <BackgroundImage>
       <View style={styles.container}>
