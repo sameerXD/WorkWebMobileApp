@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/Fontisto';
 import OfficeIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DocumetIcon from 'react-native-vector-icons/AntDesign';
 import { LogOutScreen } from '../screens/LogOutScreen/LogOutScreen';
-import { LeaveScreen } from '../screens/HomeScreen/leaveScreen';
+import { LeaveScreen } from '../screens/HomeScreen/LeaveScreen';
 const Tab = createBottomTabNavigator();
 
 export const BottomTabs=()=> {
