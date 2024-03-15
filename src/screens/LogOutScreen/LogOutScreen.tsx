@@ -16,7 +16,7 @@ export const LogOutScreen = ()=>{
            } catch(error){
                Alert.alert("Errors",error);
            }
-        dispatch({type:"USER_LOGGEDIN", payload:{ isLoggedIn: false}})
+        dispatch({type:"USER_LOGINED", payload:{ isLogined: false}})
     }
     return(
         <View style={styles.container}>
