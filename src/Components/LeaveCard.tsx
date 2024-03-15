@@ -8,7 +8,7 @@ export const LeaveCard =({ leaveName,leaveBalance}:LeaveCardProps)=>{
     return(
         <View style={styles.cardBox}>
             <Text style={styles.balanceText}>{Math.ceil(leaveBalance)}</Text>
-            <Text>{leaveName}</Text>
+            <Text style={styles.leaveNameText}>{leaveName == 'earnedLeave' ? 'Earned Leave':leaveName == 'sickLeave' ? 'Sick Leave' : leaveName}</Text>
         </View>
     )
 }
@@ -28,5 +28,10 @@ const styles = StyleSheet.create({
     balanceText:{
         fontWeight:'600',
         fontSize:30
+    },
+    leaveNameText:{
+        fontSize:14,
+        fontWeight:'600',
+        color:'#673AB7'
     }
 })
