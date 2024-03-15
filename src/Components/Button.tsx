@@ -1,5 +1,6 @@
 import React from 'react'
 import { ActivityIndicator, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { ScreenWidth } from '../assets/constants';
 interface ButtonProps {
     title: string;
     handleSubmit: () => void;
@@ -12,7 +13,7 @@ function Button(props: ButtonProps) {
     const { title, handleSubmit, color, size, ghost, isLoading } = props;
     return (
         <TouchableWithoutFeedback disabled={isLoading} onPress={handleSubmit}>
-            <View style={{ width: size == 'l' ? '95%' : size == 'm' ? '60%' : '30%', backgroundColor: ghost ? '#fff' : color ? color : '#673AB7', borderRadius: 10, justifyContent: 'center', alignItems: 'center', borderColor: ghost ? '#673AB7' : '#fff', borderWidth: 1, paddingVertical: '3%'}}>
+            <View style={{ width: size == 'l' ? ScreenWidth*0.95 : size == 'm' ? ScreenWidth*0.4 : ScreenWidth*0.3, backgroundColor: ghost ? '#fff' : color ? color : '#673AB7', borderRadius: 10, justifyContent: 'center', alignItems: 'center', borderColor: ghost ? '#673AB7' : '#fff', borderWidth: 1, paddingVertical: '3%'}}>
                 {
                     isLoading ?
                         <ActivityIndicator
