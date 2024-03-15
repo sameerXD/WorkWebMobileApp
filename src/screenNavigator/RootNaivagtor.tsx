@@ -11,9 +11,9 @@ const RootNavigator = () => {
     const dispatch = useDispatch();
     useEffect(()=>{
         setIsLoading(true);
-        AsyncStorage.getItem('token').then(data=>{
+        AsyncStorage.getItem('token').then(data=>{ 
             if(data){
-                dispatch({ type: 'USER_LOGGEDIN', payload: { isLoggedIn: true} }); 
+                dispatch({ type: 'USER_LOGINED', payload: { isLogined: true} }); 
             }
             setIsLoading(false);
         }).catch(error=>{
