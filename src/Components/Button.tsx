@@ -12,7 +12,7 @@ function Button(props: ButtonProps) {
     const { title, handleSubmit, color, size, ghost, isLoading } = props;
     return (
         <TouchableWithoutFeedback disabled={isLoading} onPress={handleSubmit}>
-            <View style={{ width: size == 'l' ? '95%' : size == 'm' ? '100%' : '100%', backgroundColor: ghost ? '#fff' : color ? color : '#673AB7', borderRadius: size == 'l' ? 30 : 10, justifyContent: 'center', alignItems: 'center', borderColor: ghost ? '#673AB7' : '#fff', borderWidth: 1, paddingVertical: size == 'l' ? '3%' : '6%' }}>
+            <View style={{ width: size == 'l' ? '95%' : size == 'm' ? '60%' : '30%', backgroundColor: ghost ? '#fff' : color ? color : '#673AB7', borderRadius: 10, justifyContent: 'center', alignItems: 'center', borderColor: ghost ? '#673AB7' : '#fff', borderWidth: 1, paddingVertical: '3%'}}>
                 {
                     isLoading ?
                         <ActivityIndicator
@@ -20,7 +20,7 @@ function Button(props: ButtonProps) {
                             size='large'
                             color='#fff'
                         /> :
-                        <Text style={{ color: ghost ? '#673AB7' : '#fff', fontSize: 20 }}>{title}</Text>
+                        <Text style={{ color: ghost ? '#673AB7' : '#fff', fontSize: size == 'l' ? 20 : size == 'm' ? 16 : 15 }}>{title}</Text>
                 }
             </View>
         </TouchableWithoutFeedback>
