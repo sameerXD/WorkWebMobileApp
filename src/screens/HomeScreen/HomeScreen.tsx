@@ -31,7 +31,7 @@ function HomeScreen({navigation}) {
             <View style={styles.container}>
             <ScrollView>
             <View style={styles.cardContainer}>
-                {serviceList.map((item, index)=><View key={item.name} style={styles.card}><ServiceCard name={item.name} icon={item.icon} key={index} handleServicePressed={()=>{handleCalledService(item.name)}}/></View>)}
+                {serviceList.map((item, index)=><View key={index} style={styles.card}><ServiceCard name={item.name} icon={item.icon} handleServicePressed={()=>{handleCalledService(item.name)}}/></View>)}
                 </View>
             </ScrollView>
             </View>

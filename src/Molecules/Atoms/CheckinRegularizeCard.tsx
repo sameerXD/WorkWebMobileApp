@@ -13,9 +13,9 @@ export const CheckinRegularizeCard =({buttonTitle,dateTitle, texts, titleColor, 
            <View style={styles.cardBox}>
                 <View style={styles.timeTextBox}>
                     <Text style={[styles.cardTitle, {color:titleColor ? titleColor : '#000', fontWeight: titleColor ? '500': '600'}]}>{dateTitle}</Text>
-                    {texts?.map(item=>{
+                    {texts?.map((item, index)=>{
                         return(
-                            <Text style={styles.cardTextNormal}>{item}</Text>
+                            <Text key={index} style={styles.cardTextNormal}>{item}</Text>
                         )
                     })}
                 </View>
