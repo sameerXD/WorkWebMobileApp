@@ -10,7 +10,12 @@ import {useFocusEffect} from '@react-navigation/native';
 import {getLeaveHistory} from '../../redux/actions/getLeaveHistory';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {DropDownSmall} from '../../Components/DropDownSmall';
-import {leaveHistoyStatusOptions} from '../../assets/constants';
+import {
+  ScreenHeight,
+  ScreenWidth,
+  leaveHistoyStatusOptions,
+} from '../../assets/constants';
+import {FlatList} from 'react-native';
 
 export const LeaveScreen = () => {
   const dispatch = useDispatch();
@@ -52,6 +57,67 @@ export const LeaveScreen = () => {
     setDropdownOption(val);
     setHistoryDropdownOpe(false);
   };
+
+  const renderLeaveHistoryList = ({item, index}) => {
+    return (
+      <View key={index} style={styles.leaveStatusBox}>
+        <View style={{width: '70%', zIndex: -1}}>
+          <Text style={{color: '#000', fontSize: 13}}>
+            {item.leaveType == 'sick-leave'
+              ? 'Sick Leave'
+              : item.leaveType == 'leave-without-pay'
+              ? 'Leave Without Pay'
+              : 'Earned Leave'}
+          </Text>
+          <Text style={{fontSize: 11}}>{item.reason}</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: '40%',
+              justifyContent: 'space-between',
+              marginTop: '2%',
+            }}>
+            <View style={styles.leaveHistoryDateBox}>
+              <Text style={{fontSize: 13, color: '#673AB7', fontWeight: '600'}}>
+                {`${new Date(item.fromDate).getDate()}-${
+                  new Date(item.fromDate).getMonth() + 1
+                }-${new Date(item.fromDate).getFullYear()}`}
+              </Text>
+            </View>
+            <View style={styles.leaveHistoryDateBox}>
+              <Text style={{fontSize: 13, color: '#673AB7', fontWeight: '600'}}>
+                {`${new Date(item.toDate).getDate()}-${
+                  new Date(item.toDate).getMonth() + 1
+                }-${new Date(item.toDate).getFullYear()}`}
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View style={styles.leaveHistoryStatusBox}>
+          <View
+            style={[
+              styles.leaveHistoryBox,
+              {
+                backgroundColor:
+                  item.status == 0
+                    ? '#FCD25C'
+                    : item.status == 1
+                    ? '#83C878'
+                    : '#F05252',
+              },
+            ]}>
+            <Text style={{color: '#fff', zIndex: -1}}>
+              {item.status == 0
+                ? 'Pending'
+                : item.status == 1
+                ? 'Accepted'
+                : 'Declined'}
+            </Text>
+          </View>
+        </View>
+      </View>
+    );
+  };
   return (
     <View style={styles.container}>
       <Header />
@@ -83,14 +149,13 @@ export const LeaveScreen = () => {
           title={'Apply Leave'}
           handleSubmit={() => {
             setModalVisible(true);
-            console.log('sldkfjsldjflsdjfklsd');
           }}
           size="sm"
         />
       </View>
       <View style={styles.historyBox}>
         <Text style={styles.historyText}>{'Leave History'}</Text>
-        <View>
+        <View style={{zIndex: 1000}}>
           <DropDownSmall
             title={dropdownOption}
             handleSelectStatus={handleSelectOption}
@@ -99,18 +164,7 @@ export const LeaveScreen = () => {
             handleOpen={() => setHistoryDropdownOpe(!historyDropdownOpen)}
           />
           {historyDropdownOpen && (
-            <View
-              style={{
-                position: 'absolute',
-                backgroundColor: '#F6F4F9',
-                marginTop: '35%',
-                width: '100%',
-                alignItems: 'center',
-                borderWidth: 1,
-                borderColor: '#673AB7',
-                borderRadius: 5,
-                zIndex: 100,
-              }}>
+            <View style={styles.dropdownOptionsStatusBox}>
               {leaveHistoyStatusOptions.map((item, index) => {
                 return (
                   <Pressable
@@ -126,6 +180,15 @@ export const LeaveScreen = () => {
             </View>
           )}
         </View>
+      </View>
+      <View style={styles.leaveHistoryListBox}>
+        {leaveHistory.length > 0 && (
+          <FlatList
+            data={leaveHistory}
+            keyExtractor={item => item.id}
+            renderItem={renderLeaveHistoryList}
+          />
+        )}
       </View>
       <CustomModal isModalVisible={modalVisible} transparent={true}>
         <ApplyLeaveForm
@@ -208,7 +271,64 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   optionsBox: {
-    zIndex: 2000,
-    marginVertical: '3%',
+    zIndex: 100,
+    paddingVertical: '3%',
+    width: '100%',
+    alignItems: 'center',
+    opacity: 1,
+  },
+  leaveHistoryListBox: {
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    flex: 1,
+    paddingTop: '3%',
+    zIndex: -1,
+  },
+  leaveStatusBox: {
+    width: ScreenWidth * 0.9,
+    marginVertical: '1.5%',
+    borderColor: '#D9D9D9',
+    padding: '2%',
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    zIndex: -1,
+  },
+  dropdownOptionsStatusBox: {
+    position: 'absolute',
+    backgroundColor: '#F6F4F9',
+    marginTop: '35%',
+    width: '100%',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#673AB7',
+    borderRadius: 5,
+    zIndex: 100,
+  },
+  leaveHistoryBox: {
+    paddingVertical: '3%',
+    paddingHorizontal: '6%',
+    borderRadius: 10,
+    marginVertical: '1%',
+    marginHorizontal: '5%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: -1,
+  },
+  leaveHistoryStatusBox: {
+    width: '30%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: -1,
+  },
+  leaveHistoryDateBox: {
+    paddingVertical: '2%',
+    paddingHorizontal: '6%',
+    borderRadius: 10,
+    backgroundColor: '#F6F4F9',
+    marginVertical: '1%',
+    marginHorizontal: '5%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
