@@ -1,7 +1,8 @@
 const initialState = {
   userData: {},
   isLogined: false,
-  isLoading: false
+  isLoading: false,
+  leaveHistory: []
 };
 
 const userReducer = (state = initialState, action) => {
@@ -20,6 +21,11 @@ const userReducer = (state = initialState, action) => {
         return {
           ...state,
           isLoading: action.payload.isLoading
+        }
+        case 'LEAVE_HISTORY':
+        return {
+          ...state,
+          leaveHistory: action.payload.leaveHistory
         }
     default:
       return state;
