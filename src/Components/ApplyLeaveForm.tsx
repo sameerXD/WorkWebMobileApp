@@ -1,6 +1,8 @@
 import React from 'react';
 import {ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
 import Button from './Button';
+import {FormDropDown} from './FormDropDown';
+import {leaveHistoyStatusOptions} from '../assets/constants';
 interface ApplyFormProps {
   title: string;
   handleSubmit: () => void;
@@ -11,13 +13,11 @@ export const ApplyLeaveForm = ({title, handleSubmit}: ApplyFormProps) => {
       <ScrollView style={{flex: 0.9, width: '100%'}}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.inputTitle}>{'Type of Leave'}</Text>
-        <TextInput
-          placeholder="Leave Type"
-          placeholderTextColor={'#000'}
-          onChangeText={val => {
-            console.log(val);
+        <FormDropDown
+          handleSelectedValue={val => {
+            console.log('Selcted Value Bro________', val);
           }}
-          style={styles.inputStyle}
+          listOptions={leaveHistoyStatusOptions}
         />
         <Text style={styles.inputTitle}>{'From Date'}</Text>
         <TextInput
