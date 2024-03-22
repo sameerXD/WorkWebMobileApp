@@ -11,6 +11,7 @@ import {getLeaveHistory} from '../../redux/actions/getLeaveHistory';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {DropDownSmall} from '../../Components/DropDownSmall';
 import {
+  ApplyLEaveFormValues,
   ScreenHeight,
   ScreenWidth,
   leaveHistoyStatusOptions,
@@ -30,6 +31,7 @@ export const LeaveScreen = () => {
   const [dropdownOption, setDropdownOption] = useState(
     leaveHistoyStatusOptions[0],
   );
+  const [isFormLoading, setIsFormLoading] = useState(false);
   useFocusEffect(
     useCallback(() => {
       const fetchData = async () => {
@@ -134,7 +136,13 @@ export const LeaveScreen = () => {
       {modalVisible ? (
         <ApplyLeaveForm
           title="Apply Leave"
-          handleSubmit={() => setModalVisible(!modalVisible)}
+          handleSubmit={val => {
+            console.log('FormValues_________', val);
+
+            // setModalVisible(!modalVisible);
+          }}
+          formInitialValues={ApplyLEaveFormValues}
+          isLoading={isFormLoading}
         />
       ) : (
         <View style={styles.container}>
