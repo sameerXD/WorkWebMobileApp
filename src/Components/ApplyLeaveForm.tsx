@@ -50,7 +50,6 @@ export const ApplyLeaveForm = ({title, handleSubmit}: ApplyFormProps) => {
           }}
           onFocus={() => {
             setActiveDateCalender(dateSetSelection.fromDate);
-            console.log('focutedsed_____', 'leaveTillDate');
           }}
           value={formValues.leaveFromDate}
           style={styles.inputStyle}
@@ -64,7 +63,6 @@ export const ApplyLeaveForm = ({title, handleSubmit}: ApplyFormProps) => {
           }}
           onFocus={() => {
             setActiveDateCalender(dateSetSelection.tillDate);
-            console.log('focutedsed_____', 'leaveTillDate');
           }}
           value={formValues.leaveTillDate}
           style={styles.inputStyle}
@@ -122,6 +120,7 @@ export const ApplyLeaveForm = ({title, handleSubmit}: ApplyFormProps) => {
                 date.getMonth() + 1
               }/${date.getFullYear()}`,
             });
+            setMinimumDate(date);
           } else if (activeDateCalender == dateSetSelection.tillDate) {
             setFormValues({
               ...formValues,
@@ -129,6 +128,7 @@ export const ApplyLeaveForm = ({title, handleSubmit}: ApplyFormProps) => {
                 date.getMonth() + 1
               }/${date.getFullYear()}`,
             });
+            setMinimumDate(new Date());
           }
           setActiveDateCalender('');
         }}
