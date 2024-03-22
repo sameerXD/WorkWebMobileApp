@@ -58,7 +58,9 @@ export const LeaveScreen = () => {
     setDropdownOption(val);
     setHistoryDropdownOpe(false);
   };
-
+  const openApplyLeaveForm = () => {
+    setModalVisible(true);
+  };
   const renderLeaveHistoryList = ({item, index}) => {
     return (
       <View key={index} style={styles.leaveStatusBox}>
@@ -157,9 +159,7 @@ export const LeaveScreen = () => {
             </View>
             <Button
               title={'Apply Leave'}
-              handleSubmit={() => {
-                setModalVisible(true);
-              }}
+              handleSubmit={openApplyLeaveForm}
               size="sm"
             />
           </View>
