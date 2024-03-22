@@ -32,6 +32,7 @@ export const LeaveScreen = () => {
   useFocusEffect(
     useCallback(() => {
       const fetchData = async () => {
+        setModalVisible(false);
         try {
           const token = await AsyncStorage.getItem('token').then(async jwt => {
             await getLeaveHistory(jwt)
@@ -119,84 +120,91 @@ export const LeaveScreen = () => {
     );
   };
   return (
-    <View style={styles.container}>
-      <Header />
-      <View style={styles.leaveContainer}>
-        <Text style={styles.title}>{'Leave Balance'}</Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            height: '50%',
-            justifyContent: 'space-between',
-          }}>
-          <LeaveCard
-            leaveName={'Total'}
-            leaveBalance={leaveList[0][1] + Math.ceil(Number(leaveList[1][1]))}
-          />
-          {leaveList.map((item, index) => {
-            if (item[0] != 'casualLeave') {
-              return (
-                <LeaveCard
-                  key={index}
-                  leaveName={item[0]}
-                  leaveBalance={item[1]}
-                />
-              );
-            }
-          })}
-        </View>
-        <Button
-          title={'Apply Leave'}
-          handleSubmit={() => {
-            setModalVisible(true);
-          }}
-          size="sm"
-        />
-      </View>
-      <View style={styles.historyBox}>
-        <Text style={styles.historyText}>{'Leave History'}</Text>
-        <View style={{zIndex: 1000}}>
-          <DropDownSmall
-            title={dropdownOption}
-            handleSelectStatus={handleSelectOption}
-            optionList={leaveHistoyStatusOptions}
-            isDropDownOpen={historyDropdownOpen}
-            handleOpen={() => setHistoryDropdownOpe(!historyDropdownOpen)}
-          />
-          {historyDropdownOpen && (
-            <View style={styles.dropdownOptionsStatusBox}>
-              {leaveHistoyStatusOptions.map((item, index) => {
-                return (
-                  <Pressable
-                    key={index}
-                    onPress={() => handleSelectOption(item)}
-                    style={styles.optionsBox}>
-                    <Text style={{color: '#673AB7', textAlign: 'left'}}>
-                      {item}
-                    </Text>
-                  </Pressable>
-                );
-              })}
-            </View>
-          )}
-        </View>
-      </View>
-      <View style={styles.leaveHistoryListBox}>
-        {leaveHistory.length > 0 && (
-          <FlatList
-            data={leaveHistory}
-            keyExtractor={item => item.id}
-            renderItem={renderLeaveHistoryList}
-          />
-        )}
-      </View>
-      <CustomModal isModalVisible={modalVisible} transparent={true}>
+    <>
+      {modalVisible ? (
         <ApplyLeaveForm
           title="Apply Leave"
           handleSubmit={() => setModalVisible(!modalVisible)}
         />
-      </CustomModal>
-    </View>
+      ) : (
+        <View style={styles.container}>
+          <Header />
+          <View style={styles.leaveContainer}>
+            <Text style={styles.title}>{'Leave Balance'}</Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                height: '50%',
+                justifyContent: 'space-between',
+              }}>
+              <LeaveCard
+                leaveName={'Total'}
+                leaveBalance={
+                  leaveList[0][1] + Math.ceil(Number(leaveList[1][1]))
+                }
+              />
+              {leaveList.map((item, index) => {
+                if (item[0] != 'casualLeave') {
+                  return (
+                    <LeaveCard
+                      key={index}
+                      leaveName={item[0]}
+                      leaveBalance={item[1]}
+                    />
+                  );
+                }
+              })}
+            </View>
+            <Button
+              title={'Apply Leave'}
+              handleSubmit={() => {
+                setModalVisible(true);
+              }}
+              size="sm"
+            />
+          </View>
+          <View style={styles.historyBox}>
+            <Text style={styles.historyText}>{'Leave History'}</Text>
+            <View style={{zIndex: 1000}}>
+              <DropDownSmall
+                title={dropdownOption}
+                handleSelectStatus={handleSelectOption}
+                optionList={leaveHistoyStatusOptions}
+                isDropDownOpen={historyDropdownOpen}
+                handleOpen={() => setHistoryDropdownOpe(!historyDropdownOpen)}
+              />
+              {historyDropdownOpen && (
+                <View style={styles.dropdownOptionsStatusBox}>
+                  {leaveHistoyStatusOptions.map((item, index) => {
+                    return (
+                      <Pressable
+                        key={index}
+                        onPress={() => handleSelectOption(item)}
+                        style={styles.optionsBox}>
+                        <Text style={{color: '#673AB7', textAlign: 'left'}}>
+                          {item}
+                        </Text>
+                      </Pressable>
+                    );
+                  })}
+                </View>
+              )}
+            </View>
+          </View>
+          <View style={styles.leaveHistoryListBox}>
+            {leaveHistory.length > 0 && (
+              <FlatList
+                data={leaveHistory}
+                keyExtractor={item => item.id}
+                renderItem={renderLeaveHistoryList}
+              />
+            )}
+          </View>
+          {/* <CustomModal isModalVisible={modalVisible} transparent={true}> */}
+          {/* </CustomModal> */}
+        </View>
+      )}
+    </>
   );
 };
 const styles = StyleSheet.create({
