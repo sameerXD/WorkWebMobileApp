@@ -8,9 +8,11 @@ import {useSelector} from 'react-redux';
 import {MultiSelectDropDown} from './MultiSelectDropDown';
 interface ApplyFormProps {
   title: string;
-  handleSubmit: () => void;
+  handleSubmit: (val: formValueType) => void;
+  formInitialValues: formValueType;
+  isLoading: boolean;
 }
-interface formValueType {
+export interface formValueType {
   leaveType: '';
   leaveFromDate: '';
   leaveTillDate: '';
@@ -19,30 +21,32 @@ interface formValueType {
   alternateNumber: '';
   reason: '';
 }
-export const ApplyLeaveForm = ({title, handleSubmit}: ApplyFormProps) => {
+export const ApplyLeaveForm = ({
+  title,
+  handleSubmit,
+  formInitialValues,
+  isLoading,
+}: ApplyFormProps) => {
   const [date, setDate] = useState(new Date());
   const [activeDateCalender, setActiveDateCalender] = useState('');
   const [minimumDate, setMinimumDate] = useState<Date>();
-  const [formValues, setFormValues] = useState<formValueType>({
-    leaveType: '',
-    leaveFromDate: '',
-    leaveTillDate: '',
-    applyTo: '',
-    ccTo: [],
-    alternateNumber: '',
-    reason: '',
-  });
+  const [formValues, setFormValues] =
+    useState<formValueType>(formInitialValues);
   const {employeeList} = useSelector(state => state.employeeList);
 
   const employeeEmailList = employeeList.map(item => item.officialEmail);
   return (
     <View style={styles.formContainer}>
-      <ScrollView style={{flex: 0.9, width: '100%', height: '100%'}}>
-        <Text style={styles.title}>{title}</Text>
+      <Text style={styles.title}>{title}</Text>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{flex: 0.9, width: '100%', height: '100%', marginBottom: '3%'}}>
         <Text style={styles.inputTitle}>{'Type of Leave'}</Text>
         <FormDropDown
           handleSelectedValue={val => {
-            console.log('Selected Leave Type ________', val);
+            setFormValues(prev => {
+              return {...prev, leaveType: val};
+            });
           }}
           listOptions={leaveHistoyStatusOptions}
         />
@@ -51,6 +55,9 @@ export const ApplyLeaveForm = ({title, handleSubmit}: ApplyFormProps) => {
           placeholder="DD/MM/YYYY"
           placeholderTextColor={'#000'}
           onChangeText={val => {
+            setFormValues(prev => {
+              return {...prev, leaveFromDate: val};
+            });
             setActiveDateCalender(dateSetSelection.fromDate);
           }}
           onFocus={() => {
@@ -64,6 +71,9 @@ export const ApplyLeaveForm = ({title, handleSubmit}: ApplyFormProps) => {
           placeholder="DD/MM/YYYY"
           placeholderTextColor={'#000'}
           onChangeText={val => {
+            setFormValues(prev => {
+              return {...prev, leaveTillDate: val};
+            });
             setActiveDateCalender(dateSetSelection.tillDate);
           }}
           onFocus={() => {
@@ -75,23 +85,30 @@ export const ApplyLeaveForm = ({title, handleSubmit}: ApplyFormProps) => {
         <Text style={styles.inputTitle}>{'Apply To'}</Text>
         <FormDropDown
           handleSelectedValue={val => {
-            console.log('Selcted Email Bro________', val);
+            setFormValues(prev => {
+              return {...prev, applyTo: val};
+            });
           }}
           listOptions={employeeEmailList}
         />
         <Text style={styles.inputTitle}>{'CC To'}</Text>
         <MultiSelectDropDown
           handleSelectedValue={val => {
-            console.log('Selcted Email Bro________', val);
+            setFormValues(prev => {
+              return {...prev, ccTo: val};
+            });
           }}
           listOptions={employeeEmailList}
         />
         <Text style={styles.inputTitle}>{'Alt No'}</Text>
         <TextInput
+          keyboardType="phone-pad"
           placeholder=""
           placeholderTextColor={'#000'}
           onChangeText={val => {
-            console.log(val);
+            setFormValues(prev => {
+              return {...prev, alternateNumber: val};
+            });
           }}
           style={styles.inputStyle}
         />
@@ -100,13 +117,20 @@ export const ApplyLeaveForm = ({title, handleSubmit}: ApplyFormProps) => {
           placeholder=""
           placeholderTextColor={'#000'}
           onChangeText={val => {
-            console.log(val);
+            setFormValues(prev => {
+              return {...prev, reason: val};
+            });
           }}
           multiline={true}
           style={styles.inputStyle}
         />
       </ScrollView>
-      <Button handleSubmit={handleSubmit} title="Apply" size="m" />
+      <Button
+        handleSubmit={() => handleSubmit(formValues)}
+        title="Apply"
+        size="m"
+        isLoading={isLoading}
+      />
       <DatePicker
         modal
         open={activeDateCalender.length > 0}
@@ -163,6 +187,7 @@ const styles = StyleSheet.create({
     color: '#000',
     fontWeight: '600',
     marginBottom: '5%',
+    alignSelf: 'flex-start',
   },
   inputStyle: {
     borderWidth: 1.5,
