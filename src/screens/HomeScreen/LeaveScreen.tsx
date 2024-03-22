@@ -16,6 +16,7 @@ import {
   leaveHistoyStatusOptions,
 } from '../../assets/constants';
 import {FlatList} from 'react-native';
+import {getAllEmployeeList} from '../../redux/actions/getEmployeeList';
 
 export const LeaveScreen = () => {
   const dispatch = useDispatch();
@@ -58,8 +59,15 @@ export const LeaveScreen = () => {
     setDropdownOption(val);
     setHistoryDropdownOpe(false);
   };
-  const openApplyLeaveForm = () => {
-    setModalVisible(true);
+  const openApplyLeaveForm = async () => {
+    const response = await getAllEmployeeList();
+    if (response?.data) {
+      dispatch({
+        type: 'GET_EMPLOYEE_LIST',
+        payload: {employeeList: response?.data},
+      });
+      setModalVisible(true);
+    }
   };
   const renderLeaveHistoryList = ({item, index}) => {
     return (
