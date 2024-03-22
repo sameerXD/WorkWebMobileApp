@@ -4,6 +4,8 @@ import Button from './Button';
 import {FormDropDown} from './FormDropDown';
 import {dateSetSelection, leaveHistoyStatusOptions} from '../assets/constants';
 import DatePicker from 'react-native-date-picker';
+import {useSelector} from 'react-redux';
+import {MultiSelectDropDown} from './MultiSelectDropDown';
 interface ApplyFormProps {
   title: string;
   handleSubmit: () => void;
@@ -30,14 +32,17 @@ export const ApplyLeaveForm = ({title, handleSubmit}: ApplyFormProps) => {
     alternateNumber: '',
     reason: '',
   });
+  const {employeeList} = useSelector(state => state.employeeList);
+
+  const employeeEmailList = employeeList.map(item => item.officialEmail);
   return (
     <View style={styles.formContainer}>
-      <ScrollView style={{flex: 0.9, width: '100%'}}>
+      <ScrollView style={{flex: 0.9, width: '100%', height: '100%'}}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.inputTitle}>{'Type of Leave'}</Text>
         <FormDropDown
           handleSelectedValue={val => {
-            console.log('Selcted Value Bro________', val);
+            console.log('Selected Leave Type ________', val);
           }}
           listOptions={leaveHistoyStatusOptions}
         />
@@ -68,22 +73,18 @@ export const ApplyLeaveForm = ({title, handleSubmit}: ApplyFormProps) => {
           style={styles.inputStyle}
         />
         <Text style={styles.inputTitle}>{'Apply To'}</Text>
-        <TextInput
-          placeholder=""
-          placeholderTextColor={'#000'}
-          onChangeText={val => {
-            console.log(val);
+        <FormDropDown
+          handleSelectedValue={val => {
+            console.log('Selcted Email Bro________', val);
           }}
-          style={styles.inputStyle}
+          listOptions={employeeEmailList}
         />
         <Text style={styles.inputTitle}>{'CC To'}</Text>
-        <TextInput
-          placeholder=""
-          placeholderTextColor={'#000'}
-          onChangeText={val => {
-            console.log(val);
+        <MultiSelectDropDown
+          handleSelectedValue={val => {
+            console.log('Selcted Email Bro________', val);
           }}
-          style={styles.inputStyle}
+          listOptions={employeeEmailList}
         />
         <Text style={styles.inputTitle}>{'Alt No'}</Text>
         <TextInput
