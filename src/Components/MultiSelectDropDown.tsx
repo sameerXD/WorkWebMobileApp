@@ -14,7 +14,10 @@ export const MultiSelectDropDown = ({
   const [renderList, setRenderList] = useState(listOptions);
   const [inputValue, setInputValue] = useState<string[]>([]);
   useEffect(() => {
-    handleSelectedValue(inputValue);
+    const selectedUserSId = inputValue.map(item => item.id);
+    console.log('selectedUserSId___________', selectedUserSId);
+
+    handleSelectedValue(selectedUserSId);
   }, [inputValue]);
   const handleChange = val => {
     if (val.length > 0) {
@@ -31,11 +34,16 @@ export const MultiSelectDropDown = ({
   return (
     <View style={styles.dropDownBox}>
       <View style={styles.inputBox}>
-        <View style={{flexDirection: 'row', marginLeft: '2%'}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            marginLeft: '2%',
+            maxWidth: ScreenWidth * 0.77,
+          }}>
           {inputValue.length == 0 ? (
             <Text>{'Select'}</Text>
           ) : (
-            inputValue.map((item, index) => {
+            inputValue.reverse().map((item, index) => {
               return (
                 <View
                   key={index}
@@ -53,7 +61,7 @@ export const MultiSelectDropDown = ({
                     style={{
                       marginRight: '1%',
                     }}>
-                    {item}
+                    {item.officialEmail}
                   </Text>
                   <Icon
                     name={'close'}
@@ -61,7 +69,9 @@ export const MultiSelectDropDown = ({
                     color={'#673AB7'}
                     onPress={() => {
                       const updatedArray = inputValue.filter(selectedValue => {
-                        return selectedValue != item;
+                        return (
+                          selectedValue.officialEmail != item.officialEmail
+                        );
                       });
                       setInputValue(updatedArray);
                       setHistoryDropdownOpen(false);
@@ -117,7 +127,7 @@ export const MultiSelectDropDown = ({
                     setHistoryDropdownOpen(false);
                     const remainingEmailList = renderList.filter(
                       uniqueValue => {
-                        return uniqueValue != item;
+                        return uniqueValue.officialEmail != item.officialEmail;
                       },
                     );
                     setRenderList(remainingEmailList);
@@ -129,7 +139,7 @@ export const MultiSelectDropDown = ({
                     borderBottomWidth: index != renderList.length - 1 ? 1 : 0,
                     borderColor: '#673AB7',
                   }}>
-                  <Text style={{color: '#000'}}>{item}</Text>
+                  <Text style={{color: '#000'}}>{item.officialEmail}</Text>
                 </Pressable>
               );
             })}
