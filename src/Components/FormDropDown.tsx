@@ -35,14 +35,25 @@ export const FormDropDown = ({
           onChangeText={handleChange}
           style={{width: ScreenWidth * 0.8}}
         />
-        <Icon
-          name={historyDropdownOpen ? 'up' : 'down'}
-          size={18}
-          color={'#673AB7'}
+        <Pressable
+          style={{
+            backgroundColor: 'transparent',
+            width: '100%',
+            height: '100%',
+            justifyContent: 'center',
+          }}
           onPress={() => {
             setHistoryDropdownOpen(!historyDropdownOpen);
-          }}
-        />
+          }}>
+          <Icon
+            name={historyDropdownOpen ? 'up' : 'down'}
+            size={18}
+            color={'#673AB7'}
+            onPress={() => {
+              setHistoryDropdownOpen(!historyDropdownOpen);
+            }}
+          />
+        </Pressable>
       </View>
       {historyDropdownOpen && (
         <View
@@ -100,7 +111,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: '3%',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    paddingRight: '10%',
+    // justifyContent: 'space-between',
   },
   inputText: {
     color: '#000',
