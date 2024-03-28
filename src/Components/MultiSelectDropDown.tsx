@@ -83,13 +83,16 @@ export const MultiSelectDropDown = ({
             })
           )}
         </View>
-        <View
+        <Pressable
           style={{
             backgroundColor: '#fff',
             height: '100%',
             width: '10%',
             justifyContent: 'center',
             alignItems: 'center',
+          }}
+          onPress={() => {
+            setHistoryDropdownOpen(!historyDropdownOpen);
           }}>
           <Icon
             name={historyDropdownOpen ? 'up' : 'down'}
@@ -99,7 +102,7 @@ export const MultiSelectDropDown = ({
               setHistoryDropdownOpen(!historyDropdownOpen);
             }}
           />
-        </View>
+        </Pressable>
       </View>
       {historyDropdownOpen && (
         <View
