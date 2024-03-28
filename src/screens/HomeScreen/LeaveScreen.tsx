@@ -179,7 +179,6 @@ export const LeaveScreen = () => {
           handleFormClose={() => {
             setIsFormLoading(false), setModalVisible(false);
           }}
-          leaveList={leaveList}
         />
       ) : (
         <View style={styles.container}>
