@@ -17,7 +17,10 @@ import {
   leaveHistoyStatusOptions,
 } from '../../assets/constants';
 import {FlatList} from 'react-native';
-import {getAllEmployeeList} from '../../redux/actions/getEmployeeList';
+import {
+  applyLeave,
+  getAllEmployeeList,
+} from '../../redux/actions/getEmployeeList';
 
 export const LeaveScreen = () => {
   const dispatch = useDispatch();
@@ -57,7 +60,6 @@ export const LeaveScreen = () => {
     }, []),
   );
   const handleSelectOption = val => {
-    console.log('handleSelectOption_______', val);
     setDropdownOption(val);
     setHistoryDropdownOpe(false);
   };
@@ -71,6 +73,7 @@ export const LeaveScreen = () => {
       setModalVisible(true);
     }
   };
+  const applyEmployeeLeave = () => {};
   const renderLeaveHistoryList = ({item, index}) => {
     return (
       <View key={index} style={styles.leaveStatusBox}>
@@ -136,13 +139,47 @@ export const LeaveScreen = () => {
       {modalVisible ? (
         <ApplyLeaveForm
           title="Apply Leave"
-          handleSubmit={val => {
-            console.log('FormValues_________', val);
-
-            // setModalVisible(!modalVisible);
+          handleSubmit={async val => {
+            setIsFormLoading(true);
+            const payLoad = {
+              leaveType: val.leaveType,
+              toDate: `${new Date(val.leaveTillDate).toISOString()}`,
+              fromDate: `${new Date(val.leaveFromDate).toISOString()}`,
+              applyTo: val.applyTo,
+              ccTo: val.ccTo,
+              contactDetails: val.alternateNumber,
+              reason: val.reason,
+              userId: userData._id,
+            };
+            const response = await applyLeave(payLoad);
+            if (response.data) {
+              Alert.alert('Success', 'Your Cleave is applied', [
+                {
+                  text: 'ok',
+                  onPress: () => {
+                    setIsFormLoading(false);
+                    setModalVisible(!modalVisible);
+                  },
+                },
+              ]);
+            } else if (response.errors) {
+              Alert.alert('Error', response.errors[0].message, [
+                {
+                  text: 'ok',
+                  onPress: () => {
+                    setIsFormLoading(false);
+                    setModalVisible(!modalVisible);
+                  },
+                },
+              ]);
+            }
           }}
           formInitialValues={ApplyLEaveFormValues}
           isLoading={isFormLoading}
+          handleFormClose={() => {
+            setIsFormLoading(false), setModalVisible(false);
+          }}
+          leaveList={leaveList}
         />
       ) : (
         <View style={styles.container}>
@@ -209,11 +246,14 @@ export const LeaveScreen = () => {
           </View>
           <View style={styles.leaveHistoryListBox}>
             {leaveHistory.length > 0 && (
-              <FlatList
-                data={leaveHistory}
-                keyExtractor={item => item.id}
-                renderItem={renderLeaveHistoryList}
-              />
+              <>
+                {/* {console.log('leaveHistory______', leaveList)} */}
+                <FlatList
+                  data={leaveHistory}
+                  keyExtractor={item => item.id}
+                  renderItem={renderLeaveHistoryList}
+                />
+              </>
             )}
           </View>
           {/* <CustomModal isModalVisible={modalVisible} transparent={true}> */}
